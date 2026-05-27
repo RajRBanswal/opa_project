@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const connectDB = require("./config/db")
 
 const PORT = 8000;
 app.use(cors({
     origin: "*"
 }))
+
+connectDB();
 app.use(express.json())
 
 // app.get("/user-info", (req, res) => {
@@ -47,7 +50,6 @@ app.post("/api/get-place", (req, res) => {
     res.json({ placeId: placeId })
 });
 
-
 app.post("/api/get-place/:userid", (req, res) => {
     const { userid } = req.params;
     const { placeId } = req.body
@@ -63,10 +65,6 @@ app.delete("/api/delete-user/:userid", (req, res) => {
     const id = req.params.userid
     res.json({ userId: id })
 })
-
-
-
-
 
 app.listen(PORT, () => {
     console.log("Server started on port no. ", PORT);
