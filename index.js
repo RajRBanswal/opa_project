@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const connectDB = require("./config/db")
+const connectDB = require("./config/db");
+const AdminSchema = require("./models/AdminSchema");
 
 const PORT = 8000;
 app.use(cors({
@@ -32,12 +33,23 @@ app.get("/api/get-place", (req, res) => {
     res.json({ message: "Fetching all places" });
 });
 
-app.post("/api/add-places", (req, res) => {
-    // const placeName = req.body.place;
-    // const lati = req.body.latitude;
-    // const long = req.body.longitude;
-    const { place, latitude, longitude } = req.body
-    res.json({ status: 201, message: "Data added successfully", place: { place, latitude, longitude } })
+app.post("/api/add-places", async (req, res) => {
+    const { name,
+        email,
+        mobile,
+        password } = req.body;
+    console.log(req.body);
+
+
+    const result = await AdminSchema.create({
+        name: name,
+        email: email,
+        mobile: mobile,
+        password: password
+    })
+    console.log(result);
+
+    res.json({ status: 201, message: "Data added successfully" })
 });
 
 app.get("/api/get-user/:userid", (req, res) => {
